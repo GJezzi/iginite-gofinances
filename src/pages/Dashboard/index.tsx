@@ -26,7 +26,7 @@ export interface DataListProps extends TransactionCardProps {
   id: string;
 }
 
-export const Dashboard = (props: DataListProps) => {
+export const Dashboard = () => {
   const data: DataListProps[] = [
     {
       id: "1",

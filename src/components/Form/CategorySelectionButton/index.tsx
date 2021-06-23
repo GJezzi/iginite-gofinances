@@ -1,6 +1,5 @@
 import React from "react";
 
-
 import { Container, Title, Icon } from "./styles";
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
   onPress: () => void;
 }
 
-export const CategorySelection = ({ title, onPress }: Props) => {
+export const CategorySelectionButton = ({ title, onPress }: Props) => {
   return (
     <Container onPress={onPress}>
       <Title>{title}</Title>

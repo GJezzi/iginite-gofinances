@@ -2,7 +2,16 @@ import React from "react";
 import { FlatList } from "react-native";
 import { categories } from "../../utils/categories";
 import { Button } from "../../components/Form/Button";
-import { Container, Header, Title, Category, Icon, Name, Separator, Footer } from "./styles";
+import {
+  Container,
+  Header,
+  Title,
+  Category,
+  Icon,
+  Name,
+  Separator,
+  Footer,
+} from "./styles";
 
 interface Category {
   key: string;
@@ -15,7 +24,15 @@ interface Props {
   closeSelectCategory: () => void;
 }
 
-export const CategorySelect = ({category, setCategory, closeSelectCategory}: Props) => {
+export const CategorySelect = ({
+  category,
+  setCategory,
+  closeSelectCategory,
+}: Props) => {
+  const handleCategorySelection = (category: Category) => {
+    setCategory(category);
+  };
+
   return (
     <Container>
       <Header>
@@ -24,22 +41,22 @@ export const CategorySelect = ({category, setCategory, closeSelectCategory}: Pro
 
       <FlatList
         data={categories}
-        style={{flex: 1, width: '100%'}}
+        style={{ flex: 1, width: "100%" }}
         keyExtractor={(item) => item.key}
-        renderItem={({ item}) => (
-          <Category>
-            <Icon name={item.icon}/>
+        renderItem={({ item }) => (
+          <Category
+            onPress={() => handleCategorySelection(item)}
+            isActive={category.key === item.key}
+          >
+            <Icon name={item.icon} />
             <Name>{item.name}</Name>
           </Category>
         )}
-        ItemSeparatorComponent={() => <Separator/>}
+        ItemSeparatorComponent={() => <Separator />}
       />
 
       <Footer>
-        <Button
-          onPress={closeSelectCategory}
-          title='Selecionar'
-        />
+        <Button onPress={closeSelectCategory} title="Selecionar" />
       </Footer>
     </Container>
   );

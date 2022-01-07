@@ -119,7 +119,7 @@ export const Dashboard = () => {
         <Title>Listagem</Title>
         <TransactionList
           data={data}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => <TransactionCard data={item} />}
         />
       </Transactions>

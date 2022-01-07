@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Keyboard, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import { Keyboard, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 import * as Yup from "yup";
 import uuid from "react-native-uuid";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -78,7 +78,7 @@ export const Register = () => {
       name: form.name,
       amount: form.amount,
       transactionType,
-      category: category.name,
+      category: category.key,
       date: new Date(),
     };
 
@@ -97,9 +97,8 @@ export const Register = () => {
         key: "category",
         name: "Categoria",
       });
-      navigation.navigate("Listagem");
     } catch (error) {
-      console.log(error);
+      navigation.navigate("Listagem");
       Alert.alert("Não foi possível cadastrar sua transação");
     }
   };

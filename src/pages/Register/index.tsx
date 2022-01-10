@@ -52,7 +52,7 @@ export const Register = () => {
     resolver: yupResolver(schema),
   });
 
-  const handleTransactionType = (type: "up" | "down") => {
+  const handleTransactionType = (type: "positive" | "negative") => {
     setTransactionType(type);
   };
 
@@ -77,7 +77,7 @@ export const Register = () => {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type: transactionType,
       category: category.key,
       date: new Date(),
     };
@@ -87,7 +87,7 @@ export const Register = () => {
       const transaction = await AsyncStorage.getItem(dataKey);
       const currentTransaction = transaction ? JSON.parse(transaction) : [];
 
-      const transactionFormatted = [...currentTransaction, newTransaction];
+      const transactionFormatted = [newTransaction, ...currentTransaction];
 
       await AsyncStorage.setItem(dataKey, JSON.stringify(transactionFormatted));
 
@@ -128,16 +128,16 @@ export const Register = () => {
             />
             <TransactionTypeView>
               <TransactionTypeButton
-                isActive={transactionType === "up"}
+                isActive={transactionType === "positive"}
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionType("up")}
+                onPress={() => handleTransactionType("positive")}
               />
               <TransactionTypeButton
-                isActive={transactionType === "down"}
+                isActive={transactionType === "negative"}
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionType("down")}
+                onPress={() => handleTransactionType("negative")}
               />
             </TransactionTypeView>
             <CategorySelectionButton

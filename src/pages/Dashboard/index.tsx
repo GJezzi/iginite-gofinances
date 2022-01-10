@@ -63,6 +63,7 @@ export const Dashboard = () => {
     );
 
     setData(transactionsFormatted);
+    console.log(transactionsFormatted)
   };
 
   useEffect(() => {

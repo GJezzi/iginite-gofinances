@@ -36,8 +36,8 @@ const schema = Yup.object().shape({
 
 export const Register = () => {
   const navigation = useNavigation();
-  const [transactionType, setTransactionType] = useState("");
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [transactionType, setTransactionType] = useState<string>("");
+  const [categoryModalOpen, setCategoryModalOpen] = useState<boolean>(false);
   const [category, setCategory] = useState({
     key: "category",
     name: "Categoria",
@@ -52,7 +52,7 @@ export const Register = () => {
     resolver: yupResolver(schema),
   });
 
-  const handleTransactionType = (type: "positive" | "negative") => {
+  const handleTransactionTypeSelection = (type: "positive" | "negative") => {
     setTransactionType(type);
   };
 
@@ -97,8 +97,9 @@ export const Register = () => {
         key: "category",
         name: "Categoria",
       });
-    } catch (error) {
+
       navigation.navigate("Listagem");
+    } catch (error) {
       Alert.alert("Não foi possível cadastrar sua transação");
     }
   };
@@ -131,13 +132,13 @@ export const Register = () => {
                 isActive={transactionType === "positive"}
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionType("positive")}
+                onPress={() => handleTransactionTypeSelection("positive")}
               />
               <TransactionTypeButton
                 isActive={transactionType === "negative"}
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionType("negative")}
+                onPress={() => handleTransactionTypeSelection("negative")}
               />
             </TransactionTypeView>
             <CategorySelectionButton

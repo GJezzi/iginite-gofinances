@@ -80,7 +80,7 @@ export const Dashboard = () => {
     let entriesTotal = 0;
     let expensesTotal = 0;
 
-    const transactionsFormatted: DataListProps[] = transactions.map(
+    const transactionsFormatted: DataListProps[] = responseFormatted.map(
       (item: DataListProps) => {
         if (item.type === 'positive') {
           entriesTotal += Number(item.amount);
@@ -113,11 +113,11 @@ export const Dashboard = () => {
     setTransactions(transactionsFormatted);
 
     const lastTransactionEntries = getLastTransactionDate(
-      transactions,
+      responseFormatted,
       'positive',
     );
     const lastTransactionExpenses = getLastTransactionDate(
-      transactions,
+      responseFormatted,
       'negative',
     );
     const totalInterval = `01 à ${lastTransactionExpenses}`;
@@ -147,7 +147,7 @@ export const Dashboard = () => {
       },
     });
     setIsLoading(false);
-  }, [transactions]);
+  }, []);
 
   useEffect(() => {
     loadTransactions();

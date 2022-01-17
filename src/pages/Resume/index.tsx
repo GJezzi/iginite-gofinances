@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HistoryCard } from '../../components/HistoryCard';
-import { Container, Header, Title } from './styles';
+import { Container, Header, Title, Content } from './styles';
 import { categories } from '../../utils/categories';
 
 interface TransactionData {
@@ -13,8 +13,10 @@ interface TransactionData {
 }
 
 interface CategoryData {
+  key: string;
   name: string;
   total: string;
+  color: string;
 }
 
 export const Resume = () => {
@@ -22,7 +24,7 @@ export const Resume = () => {
     [],
   );
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     const dataKey = '@gofinances:transactions';
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
@@ -49,17 +51,19 @@ export const Resume = () => {
         });
 
         totalByCategory.push({
+          key: category.key,
           name: category.name,
           total,
+          color: category.color,
         });
       }
     });
-
     setTotalByCategories(totalByCategory);
-  };
+  }, []);
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -67,7 +71,16 @@ export const Resume = () => {
       <Header>
         <Title>Resumo por categoria</Title>
       </Header>
-      <HistoryCard color="red" title="Compras" amount="R$10,00" />
+      <Content>
+        {totalByCategories.map(item => (
+          <HistoryCard
+            key={item.key}
+            color={item.color}
+            title={item.name}
+            amount={item.total}
+          />
+        ))}
+      </Content>
     </Container>
   );
 };

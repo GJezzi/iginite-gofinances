@@ -18,7 +18,7 @@ import theme from './src/global/styles/theme';
 
 import { AppRoutes } from './src/routes/app.routes';
 
-export const App = () => {
+export default function App() {
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
@@ -36,4 +36,4 @@ export const App = () => {
       </NavigationContainer>
     </ThemeProvider>
   );
-};
+}

@@ -27,3 +27,8 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.shapePrincipal};
   font-size: ${RFValue(18)}px;
 `;
+
+export const Content = styled.ScrollView.attrs({
+  flex: 1,
+  contentContainerStyle: { padding: 24 },
+})``;

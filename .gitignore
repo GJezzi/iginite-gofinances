@@ -53,7 +53,3 @@ buck-out/
 .expo/
 web-build/
 
-# Config
-.prettierrc.js
-.editorconfig
-.eslintrc.js

@@ -1,9 +1,9 @@
-import styled from "styled-components/native";
-import { Feather } from "@expo/vector-icons";
-import { RFValue } from "react-native-responsive-fontsize";
+import styled from 'styled-components/native';
+import { Feather } from '@expo/vector-icons';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 interface TypeProps {
-  type: "positive" | "negative";
+  type: 'positive' | 'negative';
 }
 
 export const Container = styled.View`
@@ -23,7 +23,7 @@ export const Title = styled.Text`
 export const Amount = styled.Text<TypeProps>`
   font-family: ${({ theme }) => theme.fonts.regular};
   color: ${({ theme, type }) =>
-    type === "positive" ? theme.colors.success : theme.colors.attention};
+		type === 'positive' ? theme.colors.success : theme.colors.attention};
   font-size: ${RFValue(20)}px;
   margin-top: 2px; ;
 `;

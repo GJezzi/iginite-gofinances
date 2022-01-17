@@ -1,8 +1,8 @@
-import styled from "styled-components/native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Feather } from "@expo/vector-icons";
-import { RFValue } from "react-native-responsive-fontsize";
-import theme from "../../global/styles/theme";
+import styled from 'styled-components/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
+import { RFValue } from 'react-native-responsive-fontsize';
+import theme from '../../global/styles/theme';
 
 interface CategoryProps {
   isActive: boolean;
@@ -35,7 +35,7 @@ export const Category = styled.TouchableOpacity<CategoryProps>`
   align-items: center;
 
   background-color: ${({ isActive }) =>
-    isActive ? theme.colors.secondary_light : theme.colors.background};
+		isActive ? theme.colors.secondary_light : theme.colors.background};
 `;
 
 export const Icon = styled(Feather)`

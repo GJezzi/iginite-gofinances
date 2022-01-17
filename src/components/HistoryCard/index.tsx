@@ -1,5 +1,5 @@
-import React from 'react'
-import { Container, Title, Amount } from './styles'
+import React from 'react';
+import { Container, Title, Amount } from './styles';
 
 interface Props {
     color: string;
@@ -8,12 +8,12 @@ interface Props {
 }
 
 export const HistoryCard = ({color, title, amount}: Props) => {
-    return (
-        <Container color={color}>
-            <Title>{title}</Title>
-            <Amount>{amount}</Amount>
-        </Container>
-    )
-}
+	return (
+		<Container color={color}>
+			<Title>{title}</Title>
+			<Amount>{amount}</Amount>
+		</Container>
+	);
+};
 
 

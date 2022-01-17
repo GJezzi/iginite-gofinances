@@ -10,22 +10,22 @@ interface Props extends RectButtonProperties {
 }
 
 const icons = {
-	up: 'arrow-up-circle',
-	down: 'arrow-down-circle',
+  up: 'arrow-up-circle',
+  down: 'arrow-down-circle',
 };
 
 export const TransactionTypeButton = ({
-	title,
-	type,
-	isActive,
-	...rest
+  title,
+  type,
+  isActive,
+  ...rest
 }: Props) => {
-	return (
-		<Container isActive={isActive} type={type}>
-			<Button {...rest}>
-				<Icon name={icons[type]} type={type} />
-				<Title>{title}</Title>
-			</Button>
-		</Container>
-	);
+  return (
+    <Container isActive={isActive} type={type}>
+      <Button {...rest}>
+        <Icon name={icons[type]} type={type} />
+        <Title>{title}</Title>
+      </Button>
+    </Container>
+  );
 };

@@ -21,14 +21,14 @@ export const Container = styled.View<ContainerProps>`
   border-radius: 5px;
 
   ${({ isActive, type }) =>
-		isActive &&
+    isActive &&
     type === 'up' &&
     css`
       background-color: ${({ theme }) => theme.colors.success_light};
     `}
 
   ${({ isActive, type }) =>
-		isActive &&
+    isActive &&
     type === 'down' &&
     css`
       background-color: ${({ theme }) => theme.colors.attention_light};
@@ -52,5 +52,5 @@ export const Button = styled(RectButton)`
 export const Icon = styled(Feather)<IconProps>`
   font-size: ${RFValue(24)}px;
   color: ${({ theme, type }) =>
-		type === 'up' ? theme.colors.success : theme.colors.attention};
+    type === 'up' ? theme.colors.success : theme.colors.attention};
 `;

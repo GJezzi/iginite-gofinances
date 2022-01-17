@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {
-	Container,
-	Header,
-	Title,
-	Icon,
-	Footer,
-	Amount,
-	LastTransaction,
+  Container,
+  Header,
+  Title,
+  Icon,
+  Footer,
+  Amount,
+  LastTransaction,
 } from './styles';
 
 interface Props {
@@ -18,27 +18,27 @@ interface Props {
 }
 
 const icon = {
-	up: 'arrow-up-circle',
-	down: 'arrow-down-circle',
-	total: 'dollar-sign',
+  up: 'arrow-up-circle',
+  down: 'arrow-down-circle',
+  total: 'dollar-sign',
 };
 
 export const HighlightCard = ({
-	type,
-	title,
-	amount,
-	lastTransaction,
+  type,
+  title,
+  amount,
+  lastTransaction,
 }: Props) => {
-	return (
-		<Container type={type}>
-			<Header>
-				<Title type={type}>{title}</Title>
-				<Icon name={icon[type]} type={type} />
-			</Header>
-			<Footer>
-				<Amount type={type}>{amount}</Amount>
-				<LastTransaction type={type}>{lastTransaction}</LastTransaction>
-			</Footer>
-		</Container>
-	);
+  return (
+    <Container type={type}>
+      <Header>
+        <Title type={type}>{title}</Title>
+        <Icon name={icon[type]} type={type} />
+      </Header>
+      <Footer>
+        <Amount type={type}>{amount}</Amount>
+        <LastTransaction type={type}>{lastTransaction}</LastTransaction>
+      </Footer>
+    </Container>
+  );
 };

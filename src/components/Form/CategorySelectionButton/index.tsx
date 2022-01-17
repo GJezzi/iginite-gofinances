@@ -8,10 +8,10 @@ interface Props {
 }
 
 export const CategorySelectionButton = ({ title, onPress }: Props) => {
-	return (
-		<Container onPress={onPress}>
-			<Title>{title}</Title>
-			<Icon name="chevron-down" />
-		</Container>
-	);
+  return (
+    <Container onPress={onPress}>
+      <Title>{title}</Title>
+      <Icon name="chevron-down" />
+    </Container>
+  );
 };

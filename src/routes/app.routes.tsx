@@ -10,46 +10,45 @@ import { Resume } from '../pages/Resume';
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export const AppRoutes = () => {
-	const theme = useTheme();
-	return (
-		<Navigator
-			tabBarOptions={{
-				activeTintColor: theme.colors.secondary,
-				inactiveTintColor: theme.colors.text,
-				labelPosition: 'beside-icon',
-				style: {
-					paddingVertical: Platform.OS === 'ios' ? 18 : 0,
-					height: 88,
-				},
-			}}
-		>
-			<Screen
-				name="Listagem"
-				component={Dashboard}
-				options={{
-					tabBarIcon: ({ size, color }) => (
-						<Feather size={size} color={color} name="list" />
-					),
-				}}
-			/>
-			<Screen
-				name="Cadastrar"
-				component={Register}
-				options={{
-					tabBarIcon: ({ size, color }) => (
-						<Feather size={size} color={color} name="dollar-sign" />
-					),
-				}}
-			/>
-			<Screen
-				name="Resumo"
-				component={Resume}
-				options={{
-					tabBarIcon: ({ size, color }) => (
-						<Feather size={size} color={color} name="pie-chart" />
-					),
-				}}
-			/>
-		</Navigator>
-	);
+  const theme = useTheme();
+  return (
+    <Navigator
+      tabBarOptions={{
+        activeTintColor: theme.colors.secondary,
+        inactiveTintColor: theme.colors.text,
+        labelPosition: 'beside-icon',
+        style: {
+          paddingVertical: Platform.OS === 'ios' ? 18 : 0,
+          height: 88,
+        },
+      }}>
+      <Screen
+        name="Listagem"
+        component={Dashboard}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <Feather size={size} color={color} name="list" />
+          ),
+        }}
+      />
+      <Screen
+        name="Cadastrar"
+        component={Register}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <Feather size={size} color={color} name="dollar-sign" />
+          ),
+        }}
+      />
+      <Screen
+        name="Resumo"
+        component={Resume}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <Feather size={size} color={color} name="pie-chart" />
+          ),
+        }}
+      />
+    </Navigator>
+  );
 };

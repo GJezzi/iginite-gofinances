@@ -54,7 +54,7 @@
      "max-len":[
         "warn",
         {
-           "code":120
+           "code":140
         }
      ],
     "react/no-unstable-nested-components": [ "warn", { "allowAsProps": true }],

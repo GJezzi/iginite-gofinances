@@ -1,11 +1,22 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VictoryPie } from 'victory-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { HistoryCard } from '../../components/HistoryCard';
 import { categories } from '../../utils/categories';
-import { Container, Header, Title, Content, ChartContainer } from './styles';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  ChartContainer,
+  MonthSelector,
+  MonthSelectButton,
+  MonthSelectIcon,
+  MonthLabel,
+} from './styles';
 
 interface TransactionData {
   type: 'positive' | 'negative';
@@ -25,9 +36,7 @@ interface CategoryData {
 }
 
 export const Resume = () => {
-  const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
-    [],
-  );
+  const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
 
   const theme = useTheme();
 
@@ -36,16 +45,11 @@ export const Resume = () => {
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
-    const expenses = responseFormatted.filter(
-      (expense: TransactionData) => expense.type === 'negative',
-    );
+    const expenses = responseFormatted.filter((expense: TransactionData) => expense.type === 'negative');
 
-    const expensesTotal = responseFormatted.reduce(
-      (acc: number, expense: TransactionData) => {
-        return acc + Number(expense.amount);
-      },
-      0,
-    );
+    const expensesTotal = responseFormatted.reduce((acc: number, expense: TransactionData) => {
+      return acc + Number(expense.amount);
+    }, 0);
 
     const totalByCategory: CategoryData[] = [];
 
@@ -64,9 +68,7 @@ export const Resume = () => {
           currency: 'BRL',
         });
 
-        const percentage = `${((categorySum / expensesTotal) * 100).toFixed(
-          0,
-        )}%`;
+        const percentage = `${((categorySum / expensesTotal) * 100).toFixed(0)}%`;
 
         totalByCategory.push({
           key: category.key,
@@ -91,8 +93,19 @@ export const Resume = () => {
       <Header>
         <Title>Resumo por categoria</Title>
       </Header>
-      <Content>
+      <Content
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: useBottomTabBarHeight() }}>
         <ChartContainer>
+          <MonthSelector>
+            <MonthSelectButton>
+              <MonthSelectIcon name="chevron-left" />
+            </MonthSelectButton>
+            <MonthLabel>Janeiro</MonthLabel>
+            <MonthSelectButton>
+              <MonthSelectIcon name="chevron-right" />
+            </MonthSelectButton>
+          </MonthSelector>
           <VictoryPie
             colorScale={totalByCategories.map(category => category.color)}
             style={{
@@ -110,12 +123,7 @@ export const Resume = () => {
           />
         </ChartContainer>
         {totalByCategories.map(item => (
-          <HistoryCard
-            key={item.key}
-            color={item.color}
-            title={item.name}
-            amount={item.totalFormatted}
-          />
+          <HistoryCard key={item.key} color={item.color} title={item.name} amount={item.totalFormatted} />
         ))}
       </Content>
     </Container>

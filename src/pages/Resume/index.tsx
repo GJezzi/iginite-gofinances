@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VictoryPie } from 'victory-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { addMonths, subMonths, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { useTheme } from 'styled-components';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { HistoryCard } from '../../components/HistoryCard';
@@ -37,15 +39,29 @@ interface CategoryData {
 
 export const Resume = () => {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const theme = useTheme();
+
+  const handleChangeDate = (action: 'next' | 'prev') => {
+    if (action === 'next') {
+      setSelectedDate(addMonths(selectedDate, 1));
+    } else {
+      setSelectedDate(subMonths(selectedDate, 1));
+    }
+  };
 
   const loadData = useCallback(async () => {
     const dataKey = '@gofinances:transactions';
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
-    const expenses = responseFormatted.filter((expense: TransactionData) => expense.type === 'negative');
+    const expenses = responseFormatted.filter(
+      (expense: TransactionData) =>
+        expense.type === 'negative' &&
+        new Date(expense.date).getMonth() === selectedDate.getMonth() &&
+        new Date(expense.date).getFullYear() === selectedDate.getFullYear(),
+    );
 
     const expensesTotal = responseFormatted.reduce((acc: number, expense: TransactionData) => {
       return acc + Number(expense.amount);
@@ -81,12 +97,12 @@ export const Resume = () => {
       }
     });
     setTotalByCategories(totalByCategory);
-  }, []);
+  }, [selectedDate]);
 
   useEffect(() => {
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedDate]);
 
   return (
     <Container>
@@ -98,11 +114,11 @@ export const Resume = () => {
         contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: useBottomTabBarHeight() }}>
         <ChartContainer>
           <MonthSelector>
-            <MonthSelectButton>
+            <MonthSelectButton onPress={() => handleChangeDate('prev')}>
               <MonthSelectIcon name="chevron-left" />
             </MonthSelectButton>
-            <MonthLabel>Janeiro</MonthLabel>
-            <MonthSelectButton>
+            <MonthLabel>{format(selectedDate, 'MMMM, yyyy', { locale: ptBR })}</MonthLabel>
+            <MonthSelectButton onPress={() => handleChangeDate('next')}>
               <MonthSelectIcon name="chevron-right" />
             </MonthSelectButton>
           </MonthSelector>

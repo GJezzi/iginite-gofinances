@@ -57,6 +57,7 @@
            "code":140
         }
      ],
+    "import/no-duplicates": "off",
     "react/no-unstable-nested-components": [ "warn", { "allowAsProps": true }],
     "import/no-extraneous-dependencies": ["error",  {"devDependencies": true}],
     "react/jsx-props-no-spreading": "off",

@@ -56,3 +56,9 @@ export const MonthLabel = styled.Text`
   color: ${({ theme }) => theme.colors.black};
   font-size: ${RFValue(20)}px;
 `;
+
+export const LoadContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

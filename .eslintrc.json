@@ -54,7 +54,7 @@
      "max-len":[
         "warn",
         {
-           "code":140
+           "code":80
         }
      ],
     "import/no-duplicates": "off",

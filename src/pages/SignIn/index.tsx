@@ -1,6 +1,4 @@
-import { View, Text } from 'react-native';
 import React from 'react';
-
 import { RFValue } from 'react-native-responsive-fontsize';
 import Logo from '../../assets/logo.svg';
 import AppleIcon from '../../assets/apple-icon.svg';
@@ -13,7 +11,9 @@ import {
   Title,
   SignInTitle,
   Footer,
+  ButtonWrapper,
 } from './styles';
+import SignInSocialButton from '../../components/SignInSocialButton';
 
 type Props = {};
 
@@ -30,7 +30,12 @@ export const SignIn = (props: Props) => {
         </SignInTitle>
       </Header>
 
-      <Footer />
+      <Footer>
+        <ButtonWrapper>
+          <SignInSocialButton title="Entrar com Google" svg={GoogleIcon} />
+          <SignInSocialButton title="Entrar com Apple" svg={AppleIcon} />
+        </ButtonWrapper>
+      </Footer>
     </Container>
   );
 };

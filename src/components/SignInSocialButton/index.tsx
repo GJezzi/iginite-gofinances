@@ -10,7 +10,7 @@ interface Props extends RectButtonProps {
   svg: React.FC<SvgProps>;
 }
 
-const SignInSocialButton = ({ title, svg: Svg, ...rest }: Props) => {
+export const SignInSocialButton = ({ title, svg: Svg, ...rest }: Props) => {
   return (
     <Button {...rest}>
       <ImageContainer>
@@ -20,5 +20,3 @@ const SignInSocialButton = ({ title, svg: Svg, ...rest }: Props) => {
     </Button>
   );
 };
-
-export default SignInSocialButton;

@@ -1,5 +1,10 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AuthSession from 'expo-auth-session';
+import * as AppleAuthentication from 'expo-apple-authentication';
+
+const { CLIENT_ID } = process.env;
+const { REDIRECT_ID } = process.env;
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -15,6 +20,7 @@ interface User {
 interface IAuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
+  signInWithApple(): Promise<void>;
 }
 
 interface AuthorizationResponse {
@@ -31,9 +37,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signInWithGoogle = async () => {
     try {
-      const CLIENT_ID =
-        '944100882213-urmrl7q0t66espgtn6f42je2fc7s6t7b.apps.googleusercontent.com';
-      const REDIRECT_ID = 'https://auth.expo.io/@gjezzi/gofinances';
       const RESPONSE_TYPE = 'token';
       const SCOPE = encodeURI('profile email');
 
@@ -50,7 +53,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         const userInfo = await response.json();
 
         setUser({
-          id: userInfo.id,
+          id: String(userInfo.id),
           email: userInfo.email,
           name: userInfo.given_name,
           photo: userInfo.picture,
@@ -61,8 +64,36 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const signInWithApple = async () => {
+    try {
+      const credentials = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      if (credentials) {
+        const userLogged = {
+          id: String(credentials.user),
+          email: credentials.email!,
+          name: credentials.fullName?.givenName,
+          photo: undefined,
+        };
+
+        setUser(userLogged);
+        await AsyncStorage.setItem(
+          '@gofinances:user',
+          JSON.stringify(userLogged),
+        );
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
       {children}
     </AuthContext.Provider>
   );

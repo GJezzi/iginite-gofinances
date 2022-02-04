@@ -18,14 +18,23 @@ import {
 } from './styles';
 
 export const SignIn = () => {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInWithApple } = useAuth();
 
-  const hadnleSignInWithGoogle = async () => {
+  const handleSignInWithGoogle = async () => {
     try {
       await signInWithGoogle();
     } catch (error) {
       console.log(error);
       Alert.alert('Não foi possível conectar a conta Google');
+    }
+  };
+
+  const handleSignInWithApple = async () => {
+    try {
+      await signInWithApple();
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Não foi possível conectar a conta Apple');
     }
   };
 
@@ -46,9 +55,13 @@ export const SignIn = () => {
           <SignInSocialButton
             title="Entrar com Google"
             svg={GoogleIcon}
-            onPress={signInWithGoogle}
+            onPress={handleSignInWithGoogle}
           />
-          <SignInSocialButton title="Entrar com Apple" svg={AppleIcon} />
+          <SignInSocialButton
+            title="Entrar com Apple"
+            svg={AppleIcon}
+            onPress={handleSignInWithApple}
+          />
         </ButtonWrapper>
       </Footer>
     </Container>

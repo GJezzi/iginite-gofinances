@@ -1,8 +1,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { useTheme } from 'styled-components';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
+
 import { Dashboard } from '../pages/Dashboard';
 import { Register } from '../pages/Register';
 import { Resume } from '../pages/Resume';

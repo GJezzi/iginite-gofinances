@@ -5,7 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from 'styled-components';
 
 import { HighlightCard } from '../../components/HighlightCard';
-import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
+import {
+  TransactionCard,
+  TransactionCardProps,
+} from '../../components/TransactionCard';
 
 import {
   Container,
@@ -24,6 +27,7 @@ import {
   TransactionList,
   LoadContainer,
 } from './styles';
+import { useAuth } from '../../hooks/authHook';
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
@@ -43,11 +47,18 @@ interface HighlightData {
 export const Dashboard = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
-  const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
+  const [highlightData, setHighlightData] = useState<HighlightData>(
+    {} as HighlightData,
+  );
 
   const theme = useTheme();
 
-  const getLastTransactionDate = (collection: DataListProps[], type: 'positive' | 'negative') => {
+  const { signOut, user } = useAuth();
+
+  const getLastTransactionDate = (
+    collection: DataListProps[],
+    type: 'positive' | 'negative',
+  ) => {
     const lastTransaction = new Date(
       // eslint-disable-next-line prefer-spread
       Math.max.apply(
@@ -57,10 +68,14 @@ export const Dashboard = () => {
           .map(transaction => new Date(transaction.date).getTime()),
       ),
     );
-    return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleDateString('pt-BR', {
-      month: 'long',
-    })}`;
+    return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleDateString(
+      'pt-BR',
+      {
+        month: 'long',
+      },
+    )}`;
   };
+
   const loadTransactions = useCallback(async () => {
     const dataKey = '@gofinances:transactions';
     const response = await AsyncStorage.getItem(dataKey);
@@ -69,38 +84,46 @@ export const Dashboard = () => {
     let entriesTotal = 0;
     let expensesTotal = 0;
 
-    const transactionsFormatted: DataListProps[] = responseFormatted.map((item: DataListProps) => {
-      if (item.type === 'positive') {
-        entriesTotal += Number(item.amount);
-      } else {
-        expensesTotal += Number(item.amount);
-      }
+    const transactionsFormatted: DataListProps[] = responseFormatted.map(
+      (item: DataListProps) => {
+        if (item.type === 'positive') {
+          entriesTotal += Number(item.amount);
+        } else {
+          expensesTotal += Number(item.amount);
+        }
 
-      const amount = Number(item.amount).toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      });
+        const amount = Number(item.amount).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        });
 
-      const date = Intl.DateTimeFormat('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit',
-      }).format(new Date(item.date));
+        const date = Intl.DateTimeFormat('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit',
+        }).format(new Date(item.date));
 
-      return {
-        id: item.id,
-        name: item.name,
-        amount,
-        type: item.type,
-        category: item.category,
-        date,
-      };
-    });
+        return {
+          id: item.id,
+          name: item.name,
+          amount,
+          type: item.type,
+          category: item.category,
+          date,
+        };
+      },
+    );
 
     setTransactions(transactionsFormatted);
 
-    const lastTransactionEntries = getLastTransactionDate(responseFormatted, 'positive');
-    const lastTransactionExpenses = getLastTransactionDate(responseFormatted, 'negative');
+    const lastTransactionEntries = getLastTransactionDate(
+      responseFormatted,
+      'positive',
+    );
+    const lastTransactionExpenses = getLastTransactionDate(
+      responseFormatted,
+      'negative',
+    );
     const totalInterval = `01 à ${lastTransactionExpenses}`;
 
     const total = entriesTotal - expensesTotal;
@@ -153,15 +176,15 @@ export const Dashboard = () => {
               <UserInfo>
                 <Avatar
                   source={{
-                    uri: 'https://avatars.githubusercontent.com/u/10424568?v=4',
+                    uri: user.photo,
                   }}
                 />
                 <UserView>
                   <Greetings>Olá,</Greetings>
-                  <UserName>Gianfranco</UserName>
+                  <UserName>{user.name}</UserName>
                 </UserView>
               </UserInfo>
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>

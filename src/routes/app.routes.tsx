@@ -15,11 +15,12 @@ export const AppRoutes = () => {
   const theme = useTheme();
   return (
     <Navigator
-      tabBarOptions={{
-        activeTintColor: theme.colors.secondary,
-        inactiveTintColor: theme.colors.text,
-        labelPosition: 'beside-icon',
-        style: {
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: theme.colors.secondary,
+        tabBarInactiveTintColor: theme.colors.text,
+        tabBarLabelPosition: 'beside-icon',
+        tabBarStyle: {
           paddingVertical: Platform.OS === 'ios' ? 18 : 0,
           height: 88,
         },

@@ -17,7 +17,7 @@ import theme from './src/global/styles/theme';
 import { AppRoutes } from './src/routes/app.routes';
 // import { SignIn } from './src/pages/SignIn';
 import { Routes } from './src/routes';
-import { AuthProvider } from './src/hooks/authHook';
+import { AuthProvider, useAuth } from './src/hooks/authHook';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -26,7 +26,9 @@ export default function App() {
     Poppins_700Bold,
   });
 
-  if (!fontsLoaded) {
+  const { isLoading } = useAuth();
+
+  if (!fontsLoaded || isLoading) {
     return <AppLoading />;
   }
 

@@ -1,7 +1,15 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
 import * as AuthSession from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { CLIENT_ID } = process.env;
 const { REDIRECT_ID } = process.env;
@@ -21,6 +29,8 @@ interface IAuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
   signInWithApple(): Promise<void>;
+  signOut(): Promise<void>;
+  isLoading: boolean;
 }
 
 interface AuthorizationResponse {
@@ -34,6 +44,8 @@ const AuthContext = createContext({} as IAuthContextData);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User>({} as User);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const userStorageKey = '@gofinances:user';
 
   const signInWithGoogle = async () => {
     try {
@@ -76,24 +88,39 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       if (credentials) {
         const userLogged = {
           id: String(credentials.user),
-          email: credentials.email!,
+          email: credentials.email,
           name: credentials.fullName?.givenName,
-          photo: undefined,
+          photo: `https://ui-avatars.com/api/?name=${credentials.fullName?.givenName}`,
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem(
-          '@gofinances:user',
-          JSON.stringify(userLogged),
-        );
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       }
     } catch (error) {
       throw new Error(error);
     }
   };
 
+  const signOut = async () => {
+    setUser({} as User);
+    await AsyncStorage.removeItem(userStorageKey);
+  };
+
+  useEffect(() => {
+    const loadUserStorageData = async () => {
+      const userStoraged = await AsyncStorage.getItem(userStorageKey);
+      if (userStoraged) {
+        const userLogged = JSON.parse(userStoraged) as User;
+        setUser(userLogged);
+      }
+      setIsLoading(false);
+    };
+    loadUserStorageData();
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
+    <AuthContext.Provider
+      value={{ user, signInWithGoogle, signInWithApple, signOut, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

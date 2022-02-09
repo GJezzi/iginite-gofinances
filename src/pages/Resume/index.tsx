@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useFocusEffect } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import { VictoryPie } from 'victory-native';
 import { addMonths, subMonths, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/authHook';
 import { HistoryCard } from '../../components/HistoryCard';
 import { categories } from '../../utils/categories';
 import {
@@ -47,6 +48,8 @@ export const Resume = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { user } = useAuth();
+
   const theme = useTheme();
 
   const handleChangeDate = (action: 'next' | 'prev') => {
@@ -59,7 +62,7 @@ export const Resume = () => {
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
